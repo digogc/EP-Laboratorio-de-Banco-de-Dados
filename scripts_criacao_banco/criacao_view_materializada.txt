@@ -1,0 +1,9 @@
+CREATE MATERIALIZED VIEW Campus_Restaurantes AS
+SELECT
+campus.nome as Campus,
+restaurante_universitario.id_restaurante as Restaurante
+from campus
+left join restaurante_universitario
+on restaurante_universitario.nome = campus.nome
+WITH DATA;
+

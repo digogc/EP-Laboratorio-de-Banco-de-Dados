@@ -1,0 +1,55 @@
+-- Criando tabela com partição.
+create table LIMPEZA_2 (
+ Id_ambiente varchar(5) not null,
+ Data date not null,
+ CPF varchar(14) not null,
+ constraint ID_LIMPEZA primary key (Id_ambiente, Data)
+) PARTITION BY RANGE (data);
+
+-- Criando as partições especificamente.
+DO $$
+DECLARE
+ start_date DATE := DATE '2018-01-01';
+ end_date DATE := DATE '2025-02-28'; -- até o último mês desejado (maio/2025)
+ current_start DATE;
+ current_end DATE;
+ partition_name TEXT;
+BEGIN
+ current_start := start_date;
+ WHILE current_start < end_date LOOP
+ current_end := (current_start + INTERVAL '1 month')::DATE;
+ partition_name := format(
+ 'limpeza_%s_%s',
+ EXTRACT(YEAR FROM current_start),
+ LPAD(EXTRACT(MONTH FROM current_start)::TEXT, 2, '0')
+ );
+ EXECUTE format(
+ 'CREATE TABLE %I PARTITION OF limpeza_2 FOR VALUES FROM (%L)
+TO (%L);',
+ partition_name, current_start, current_end
+ );
+ current_start := current_end;
+ END LOOP;
+END $$;
+
+-- Transferindo os dados para a nova tabela.
+insert into limpeza_2
+select * from limpeza;
+
+-- Criando índice na nova tabela (igual ao que havia na anterior).
+CREATE INDEX idx_cpf_limpeza_2 ON limpeza_2 (cpf);
+
+-- Recriando chaves estrangeiras com a nova tabela (FKs que a tabela a ser apagada possui e FKs que apontam para a tabela a ser apagada).
+alter table LIMPEZA_2 add constraint REF_LIMPE_FUNCI_FK
+ foreign key (CPF)
+ references FUNCIONARIO;
+
+alter table LIMPEZA_2 add constraint REF_LIMPE_AMBIE
+ foreign key (Id_ambiente)
+ references AMBIENTE;
+
+-- Excluir a tabela anterior, que foi substituída por sua versão particionada.
+drop table limpeza;
+
+-- Renomear a nova tabela.
+ALTER TABLE limpeza_2 RENAME TO limpeza;
