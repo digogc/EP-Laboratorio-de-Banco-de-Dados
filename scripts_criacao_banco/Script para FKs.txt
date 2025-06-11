@@ -1,0 +1,47 @@
+alter table ALIMENTO_ARMAZENADO add constraint REF_ALIME_AMBIE
+     foreign key (Id_ambiente)
+     references AMBIENTE;
+
+alter table AMBIENTE add constraint EQU_AMBIE_RESTA_FK
+     foreign key (Id_restaurante)
+     references RESTAURANTE_UNIVERSITARIO;
+
+alter table EQUIPAMENTO add constraint EQU_EQUIP_RESTA_FK
+     foreign key (Id_restaurante)
+     references RESTAURANTE_UNIVERSITARIO;
+
+alter table FUNCIONARIO add constraint REF_FUNCI_RESTA_FK
+     foreign key (Id_restaurante)
+     references RESTAURANTE_UNIVERSITARIO;
+
+alter table INCLUI add constraint EQU_INCLU_REFEI_FK
+     foreign key (Tipo, Data)
+     references REFEICAO;
+
+alter table INCLUI add constraint REF_INCLU_PRATO
+     foreign key (Nome)
+     references PRATO;
+
+alter table LIMPEZA add constraint REF_LIMPE_FUNCI_FK
+     foreign key (CPF)
+     references FUNCIONARIO;
+
+alter table LIMPEZA add constraint REF_LIMPE_AMBIE
+     foreign key (Id_ambiente)
+     references AMBIENTE;
+
+alter table MANUTENCAO add constraint REF_MANUT_EQUIP
+     foreign key (Id_equipamento)
+     references EQUIPAMENTO;
+
+alter table MANUTENCAO add constraint REF_MANUT_FUNCI_FK
+     foreign key (CPF)
+     references FUNCIONARIO;
+
+alter table OFERECE add constraint EQU_OFERE_RESTA
+     foreign key (Id_restaurante)
+     references RESTAURANTE_UNIVERSITARIO;
+
+alter table OFERECE add constraint EQU_OFERE_REFEI_FK
+     foreign key (Tipo, Data)
+     references REFEICAO;

@@ -1,0 +1,90 @@
+create table ALIMENTO_ARMAZENADO (
+     Id_ambiente varchar(5) not null,
+     Nome varchar(15) not null,
+     Qtd_kg numeric(4) not null,
+     Forma varchar(15),
+     constraint ID_ALIMENTO_ARMAZENADO_ID primary key (Id_ambiente, Nome));
+
+create table AMBIENTE (
+     Id_ambiente varchar(5) not null,
+     Tipo varchar(20) not null,
+     Id_restaurante varchar(4) not null,
+     constraint ID_AMBIENTE_ID primary key (Id_ambiente));
+
+create table CAMPUS (
+     Nome varchar(30) not null,
+     CEP varchar(9) not null,
+     Estado char(2),
+     Cidade varchar(15),
+     Zona varchar(15),
+     Rua varchar(30),
+     Numero numeric(4) not null,
+     constraint ID_CAMPUS_ID primary key (Nome));
+
+create table EQUIPAMENTO (
+     Id_equipamento varchar(6) not null,
+     Tipo varchar(15) not null,
+     Marca varchar(15),
+     Estado varchar(10),
+     Data_aquisicao date not null,
+     Valor_compra numeric(4,2) not null,
+     Id_restaurante varchar(4) not null,
+     constraint ID_EQUIPAMENTO_ID primary key (Id_equipamento));
+
+create table FUNCIONARIO (
+     CPF varchar(14) not null,
+     Setor varchar(15) not null,
+     Nome varchar(40) not null,
+     Sobrenome varchar(40) not null,
+     Turno varchar(15) not null,
+     Salario numeric(3,2) not null,
+     Data_contratacao date not null,
+     Telefone varchar(13) not null,
+     Nivel_estudo varchar(20),
+     Id_restaurante varchar(4) not null,
+     constraint ID_FUNCIONARIO_ID primary key (CPF));
+
+create table INCLUI (
+     Nome varchar(15) not null,
+     Tipo varchar(20) not null,
+     Data date not null,
+     constraint ID_INCLUI_ID primary key (Nome, Tipo, Data));
+
+create table LIMPEZA (
+     Id_ambiente varchar(5) not null,
+     Data date not null,
+     CPF varchar(14) not null,
+     constraint ID_LIMPEZA_ID primary key (Id_ambiente, Data));
+
+create table MANUTENCAO (
+     Id_equipamento varchar(6) not null,
+     Data date not null,
+     CPF varchar(14) not null,
+     constraint ID_MANUTENCAO_ID primary key (Id_equipamento, Data));
+
+create table OFERECE (
+     Tipo varchar(20) not null,
+     Data date not null,
+     Id_restaurante varchar(4) not null,
+     constraint ID_OFERECE_ID primary key (Id_restaurante, Tipo, Data));
+
+create table PRATO (
+     Nome varchar(15) not null,
+     Tipo varchar(15),
+     Cal_100g numeric(3),
+     constraint ID_PRATO_ID primary key (Nome));
+
+create table REFEICAO (
+     Tipo varchar(20) not null,
+     Data date not null,
+     Horario_inicio varchar(6) not null,
+     Horario_fim varchar(6) not null,
+     Valor numeric(2,2) not null,
+     constraint ID_REFEICAO_ID primary key (Tipo, Data));
+
+create table RESTAURANTE_UNIVERSITARIO (
+     Id_restaurante varchar(4) not null,
+     Capacidade numeric(4) not null,
+     Tipo_gestao varchar(10) not null,
+     Nome varchar(30),
+     constraint ID_RESTAURANTE_UNIVERSITARIO_ID primary key (Id_restaurante));
